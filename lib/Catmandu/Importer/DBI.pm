@@ -4,7 +4,7 @@ use Catmandu::Sane;
 use DBI;
 use Moo;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 with 'Catmandu::Importer';
 
@@ -12,6 +12,12 @@ has dsn      => (is => 'ro' , required => 1);
 has user     => (is => 'ro');
 has password => (is => 'ro');
 has query    => (is => 'ro' , required => 1);
+has dbh  => (
+    is       => 'ro',
+    init_arg => undef,
+    lazy     => 1,
+    builder  => '_build_dbh',
+);
 has sth  => (
 	is       => 'ro',
     init_arg => undef,
@@ -19,11 +25,14 @@ has sth  => (
     builder  => '_build_sth',
 );
 
+sub _build_dbh {
+    my $self = $_[0];
+    DBI->connect($self->dsn, $self->user, $self->password);
+}
+
 sub _build_sth {
     my $self = $_[0];
-    my $dbh = DBI->connect($self->dsn, $self->user, $self->password);
-    $self->{dbh} = $dbh;
-    my $sth = $dbh->prepare($self->query);
+    my $sth  = $self->dbh->prepare($self->query);
     $sth->execute;
     $sth;
 }
@@ -39,7 +48,7 @@ sub generator {
 sub DESTROY {
 	my ($self) = @_;
 	$self->sth->finish;
-	$self->{dbh}->disconnect;
+	$self->dbh->disconnect;
 }
 
 =head1 NAME 
@@ -58,12 +67,16 @@ Catmandu::Importer::DBI - Catmandu module to import data from any DBI source
  ); 
 
  my $importer = Catmandu::Importer::DBI->new(%attrs);
-
+ 
+ # Optional set extra parameters on the database handle
+ # $importer->dbh->{LongReadLen} = 1024 * 64;
+ 
  $importer->each(sub {
 	my $row_hash = shift;
 	...
  });
 
+ 
  # or
 
  $ catmandu convert DBI --dsn dbi:mysql:foobar --user foo --password bar --query "select * from table"

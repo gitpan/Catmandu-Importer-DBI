@@ -38,7 +38,7 @@
    "provides" : {
       "Catmandu::Importer::DBI" : {
          "file" : "lib/Catmandu/Importer/DBI.pm",
-         "version" : "0.02"
+         "version" : "0.03"
       }
    },
    "release_status" : "stable",
@@ -53,5 +53,5 @@
          "url" : "https://github.com/LibreCat/Catmandu-Importer-DBI"
       }
    },
-   "version" : "0.02"
+   "version" : "0.03"
 }

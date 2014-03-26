@@ -1,5 +1,8 @@
 Revision history for Catmandu-Importer-DBI
 
+0.03 2014-03-26
+  - adding support for accessing the database handle
+  
 0.02 2014-02-21
   - deleted internal test
 

@@ -18,7 +18,7 @@ name: Catmandu-Importer-DBI
 provides:
   Catmandu::Importer::DBI:
     file: lib/Catmandu/Importer/DBI.pm
-    version: 0.02
+    version: 0.03
 requires:
   Catmandu: 0.8005
   DBI: 1.630
@@ -28,4 +28,4 @@ resources:
   bugtracker: https://github.com/LibreCat/Catmandu-Importer-DBI/issues
   license: http://dev.perl.org/licenses/
   repository: https://github.com/LibreCat/Catmandu-Importer-DBI
-version: 0.02
+version: 0.03
